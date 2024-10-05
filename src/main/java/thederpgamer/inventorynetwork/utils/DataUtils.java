@@ -1,7 +1,7 @@
-package username.modtemplate.utils;
+package thederpgamer.inventorynetwork.utils;
 
 import api.common.GameCommon;
-import username.modtemplate.ModTemplate;
+import thederpgamer.inventorynetwork.InventoryNetwork;
 
 public class DataUtils {
 
@@ -10,6 +10,6 @@ public class DataUtils {
 	}
 
 	public static String getResourcesPath() {
-		return ModTemplate.getInstance().getSkeleton().getResourcesFolder().getPath().replace('\\', '/');
+		return InventoryNetwork.getInstance().getSkeleton().getResourcesFolder().getPath().replace('\\', '/');
 	}
 }

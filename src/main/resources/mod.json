@@ -1,12 +1,12 @@
 {
-  "name": "ModTemplate",
-  "author": "Username",
+  "name": "InventoryNetwork",
+  "author": "TheDerpGamer",
   "description": "Template for making StarMade mods.",
   "version": "1.0.0",
   "starmade_version": "0.203.164",
   "client_mod": false,
   "server_mod": false,
-  "main_class": "username.modtemplate.ModTemplate",
+  "main_class": "thederpgamer.inventorynetwork.InventoryNetwork",
   "smd_resource_id": 9999,
   "dependencies": [
     -1

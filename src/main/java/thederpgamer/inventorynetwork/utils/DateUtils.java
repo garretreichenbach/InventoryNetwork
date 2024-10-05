@@ -1,4 +1,4 @@
-package username.modtemplate.utils;
+package thederpgamer.inventorynetwork.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

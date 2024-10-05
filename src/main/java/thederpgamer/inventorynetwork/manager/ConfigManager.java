@@ -1,7 +1,7 @@
-package username.modtemplate.manager;
+package thederpgamer.inventorynetwork.manager;
 
 import api.mod.config.FileConfiguration;
-import username.modtemplate.ModTemplate;
+import thederpgamer.inventorynetwork.InventoryNetwork;
 
 public class ConfigManager {
 
@@ -10,7 +10,7 @@ public class ConfigManager {
 			"debug-mode: false"
 	};
 
-	public static void initialize(ModTemplate instance) {
+	public static void initialize(InventoryNetwork instance) {
 		mainConfig = instance.getConfig("config");
 		mainConfig.saveDefault(defaultMainConfig);
 	}
