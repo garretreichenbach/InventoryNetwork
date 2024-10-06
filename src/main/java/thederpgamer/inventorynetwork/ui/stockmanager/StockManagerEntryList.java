@@ -80,7 +80,7 @@ public class StockManagerEntryList extends ScrollableTableList<StockManagerData.
 			if(data == null) continue;
 			GUIClippedRow priorityRow = getSimpleRow(data.getPriority(), this);
 			GUIClippedRow typeRow = getSimpleRow(ElementKeyMap.getInfo(data.getType()).getName(), this);
-			GUIClippedRow amountRow = getSimpleRow(data.getAmount(), this);
+			GUIClippedRow amountRow = getSimpleRow(data.getMinStock(), this);
 			GUIClippedRow toggleRow = getSimpleRow(data.getToggle(), this);
 			StockManagerEntryListRow entryListRow = new StockManagerEntryListRow(getState(), data, priorityRow, typeRow, amountRow, toggleRow);
 			GUIAncor anchor = new GUIAncor(getState(), element.getWidth() - 107.0f, 28.0f) {
@@ -148,7 +148,7 @@ public class StockManagerEntryList extends ScrollableTableList<StockManagerData.
 							try {
 								int amount = Integer.parseInt(s);
 								if(amount < 0) amount = 0; //<= 0 means stock as much as possible (infinite)
-								data.setAmount(amount);
+								data.setMinStock(amount);
 								return true;
 							} catch(Exception exception) {
 								return false;

@@ -114,13 +114,15 @@ public class StockManagerData extends SerializableData {
 
 		private final byte VERSION = 0;
 		private short priority;
-		private int amount;
+		private int minStock;
+		private int maxStock;
 		private short type;
 		private boolean toggle;
 
-		public StockManagerSerializableDataEntry(int amount, short type) {
+		public StockManagerSerializableDataEntry(int minStock, int maxStock, short type) {
 			super(DataType.STOCK_MANAGER_DATA_ENTRY, java.util.UUID.randomUUID().toString());
-			this.amount = amount;
+			this.minStock = minStock;
+			this.maxStock = maxStock;
 			this.type = type;
 			toggle = true;
 			priority = 0;
@@ -142,7 +144,8 @@ public class StockManagerData extends SerializableData {
 			json.put("version", VERSION);
 			json.put("dataUUID", dataUUID);
 			json.put("priority", priority);
-			json.put("amount", amount);
+			json.put("minStock", minStock);
+			json.put("maxStock", maxStock);
 			json.put("type", type);
 			json.put("toggle", toggle);
 			return json;
@@ -153,7 +156,8 @@ public class StockManagerData extends SerializableData {
 			byte version = (byte) data.getInt("version");
 			dataUUID = data.getString("dataUUID");
 			priority = (short) data.getInt("priority");
-			amount = data.getInt("amount");
+			minStock = data.getInt("minStock");
+			maxStock = data.getInt("maxStock");
 			type = (short) data.getInt("type");
 			toggle = data.getBoolean("toggle");
 		}
@@ -161,7 +165,8 @@ public class StockManagerData extends SerializableData {
 		@Override
 		public void serializeNetwork(PacketWriteBuffer writeBuffer) throws IOException {
 			writeBuffer.writeShort(priority);
-			writeBuffer.writeInt(amount);
+			writeBuffer.writeInt(minStock);
+			writeBuffer.writeInt(maxStock);
 			writeBuffer.writeShort(type);
 			writeBuffer.writeBoolean(toggle);
 		}
@@ -169,7 +174,8 @@ public class StockManagerData extends SerializableData {
 		@Override
 		public void deserializeNetwork(PacketReadBuffer readBuffer) throws IOException {
 			priority = readBuffer.readShort();
-			amount = readBuffer.readInt();
+			minStock = readBuffer.readInt();
+			maxStock = readBuffer.readInt();
 			type = readBuffer.readShort();
 			toggle = readBuffer.readBoolean();
 		}
@@ -192,12 +198,21 @@ public class StockManagerData extends SerializableData {
 			StockDataManager.getInstance().sendPacket(this, DataManager.UPDATE_DATA, true);
 		}
 
-		public int getAmount() {
-			return amount;
+		public int getMinStock() {
+			return minStock;
 		}
 
-		public void setAmount(int amount) {
-			this.amount = amount;
+		public void setMinStock(int minStock) {
+			this.minStock = minStock;
+			StockDataManager.getInstance().sendPacket(this, DataManager.UPDATE_DATA, true);
+		}
+
+		public int getMaxStock() {
+			return maxStock;
+		}
+
+		public void setMaxStock(int maxStock) {
+			this.maxStock = maxStock;
 			StockDataManager.getInstance().sendPacket(this, DataManager.UPDATE_DATA, true);
 		}
 
