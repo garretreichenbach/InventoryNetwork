@@ -1,15 +1,14 @@
 package thederpgamer.inventorynetwork;
 
 import api.config.BlockConfig;
+import api.listener.events.controller.ClientInitializeEvent;
+import api.listener.events.controller.ServerInitializeEvent;
 import api.mod.StarMod;
 import org.apache.commons.io.IOUtils;
 import org.schema.schine.resource.ResourceLoader;
 import thederpgamer.inventorynetwork.element.ElementManager;
 import thederpgamer.inventorynetwork.element.block.systems.StockManager;
-import thederpgamer.inventorynetwork.manager.ConfigManager;
-import thederpgamer.inventorynetwork.manager.EventManager;
-import thederpgamer.inventorynetwork.manager.PacketManager;
-import thederpgamer.inventorynetwork.manager.ResourceManager;
+import thederpgamer.inventorynetwork.manager.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -34,6 +33,16 @@ public class InventoryNetwork extends StarMod {
 		ConfigManager.initialize(this);
 		EventManager.initialize(this);
 		PacketManager.initialize();
+	}
+
+	@Override
+	public void onServerCreated(ServerInitializeEvent event) {
+		DataManager.initialize(false);
+	}
+
+	@Override
+	public void onClientCreated(ClientInitializeEvent event) {
+		DataManager.initialize(true);
 	}
 
 	@Override

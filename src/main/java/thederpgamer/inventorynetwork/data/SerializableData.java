@@ -14,9 +14,10 @@ import java.io.IOException;
 public abstract class SerializableData {
 
 	public enum DataType {
-		STOCK_MANAGER_DATA(StockManagerData.class);
+		STOCK_MANAGER_DATA(StockManagerData.class),
+		STOCK_MANAGER_DATA_ENTRY(StockManagerData.StockManagerSerializableDataEntry.class);
 
-		private Class<? extends SerializableData> dataClass;
+		private final Class<? extends SerializableData> dataClass;
 
 		DataType(Class<? extends SerializableData> dataClass) {
 			this.dataClass = dataClass;

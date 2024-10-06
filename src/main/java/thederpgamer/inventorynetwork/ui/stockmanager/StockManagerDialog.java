@@ -4,9 +4,19 @@ import api.common.GameClient;
 import org.schema.game.client.controller.PlayerInput;
 import org.schema.game.client.view.gui.GUIInputInterface;
 import org.schema.game.common.data.SegmentPiece;
+import org.schema.schine.common.language.Lng;
 import org.schema.schine.graphicsengine.core.GLFrame;
 import org.schema.schine.graphicsengine.core.MouseEvent;
+import org.schema.schine.graphicsengine.forms.gui.GUIActivationCallback;
+import org.schema.schine.graphicsengine.forms.gui.GUICallback;
+import org.schema.schine.graphicsengine.forms.gui.GUIElement;
+import org.schema.schine.graphicsengine.forms.gui.newgui.GUIContentPane;
+import org.schema.schine.graphicsengine.forms.gui.newgui.GUIHorizontalArea;
+import org.schema.schine.graphicsengine.forms.gui.newgui.GUIHorizontalButtonTablePane;
 import org.schema.schine.graphicsengine.forms.gui.newgui.GUIMainWindow;
+import org.schema.schine.input.InputState;
+import thederpgamer.inventorynetwork.data.StockManagerData;
+import thederpgamer.inventorynetwork.manager.StockDataManager;
 
 /**
  * [Description]
@@ -61,9 +71,40 @@ public class StockManagerDialog extends PlayerInput {
 		public void recreateTabs() {
 			int lastTab = getSelectedTab();
 			if(!getTabs().isEmpty()) clearTabs();
+			StockManagerData data = StockDataManager.getInstance().getFromSegmentPiece(segmentPiece);
+			if(data != null) {
+				GUIContentPane entriesPane = addTab(Lng.str("STOCK ENTRIES"));
+				entriesPane.setTextBoxHeightLast(300);
+				StockManagerEntryList entryList = new StockManagerEntryList(getState(), entriesPane.getContent(0), data);
+				entryList.onInit();
+				entriesPane.getContent(0).attach(entryList);
+				entriesPane.addNewTextBox(30);
+				GUIHorizontalButtonTablePane buttonPane = new GUIHorizontalButtonTablePane(getState(), 1, 1, entriesPane.getContent(1));
+				buttonPane.onInit();
+				buttonPane.addButton(0, 0, Lng.str("ADD ENTRY"), GUIHorizontalArea.HButtonColor.GREEN, new GUICallback() {
+					@Override
+					public void callback(GUIElement guiElement, MouseEvent mouseEvent) {
+						if(mouseEvent.pressedLeftMouse()) {
+							//Todo: Add entry dialog
+						}
+					}
 
+					@Override
+					public boolean isOccluded() {
+						return false;
+					}
+				}, new GUIActivationCallback() {
+					@Override
+					public boolean isVisible(InputState inputState) {
+						return true;
+					}
 
-
+					@Override
+					public boolean isActive(InputState inputState) {
+						return true;
+					}
+				});
+			}
 			setSelectedTab(lastTab);
 		}
 	}
