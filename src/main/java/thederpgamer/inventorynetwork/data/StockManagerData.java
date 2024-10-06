@@ -23,13 +23,11 @@ public class StockManagerData extends SerializableData {
 	private long blockIndex;
 	private long entityID;
 	private final Set<StockManagerSerializableDataEntry> data = new HashSet<>();
-	private boolean flagUpdate;
 
 	public StockManagerData(long blockIndex, long entityID) {
 		super(DataType.STOCK_MANAGER_DATA, java.util.UUID.randomUUID().toString());
 		this.blockIndex = blockIndex;
 		this.entityID = entityID;
-		flagUpdate = true;
 	}
 
 	@Override
@@ -40,7 +38,6 @@ public class StockManagerData extends SerializableData {
 		json.put("blockIndex", blockIndex);
 		json.put("entityID", entityID);
 		json.put("data", data.toArray(new StockManagerSerializableDataEntry[0]));
-		json.put("flagUpdate", flagUpdate);
 		return json;
 	}
 
@@ -52,7 +49,6 @@ public class StockManagerData extends SerializableData {
 		entityID = json.getLong("entityID");
 		JSONArray dataArray = json.getJSONArray("data");
 		for(int i = 0; i < dataArray.length(); i++) data.add(new StockManagerSerializableDataEntry(dataArray.getJSONObject(i)));
-		flagUpdate = json.getBoolean("flagUpdate");
 	}
 
 	@Override
@@ -62,7 +58,6 @@ public class StockManagerData extends SerializableData {
 		writeBuffer.writeLong(entityID);
 		writeBuffer.writeInt(data.size());
 		for(StockManagerSerializableDataEntry entry : data) entry.serializeNetwork(writeBuffer);
-		writeBuffer.writeBoolean(flagUpdate);
 	}
 
 	@Override
@@ -72,7 +67,6 @@ public class StockManagerData extends SerializableData {
 		entityID = readBuffer.readLong();
 		int dataSize = readBuffer.readInt();
 		for(int i = 0; i < dataSize; i++) data.add(new StockManagerSerializableDataEntry(readBuffer));
-		flagUpdate = readBuffer.readBoolean();
 	}
 
 	@Override
@@ -98,16 +92,12 @@ public class StockManagerData extends SerializableData {
 
 	public void addData(StockManagerSerializableDataEntry entry) {
 		data.add(entry);
-		flagUpdate = true;
+		StockDataManager.getInstance().sendPacket(this, DataManager.UPDATE_DATA, true);
 	}
 
 	public void removeData(StockManagerSerializableDataEntry entry) {
 		data.remove(entry);
-		flagUpdate = true;
-	}
-
-	public boolean needsUpdate() {
-		return flagUpdate;
+		StockDataManager.getInstance().sendPacket(this, DataManager.UPDATE_DATA, true);
 	}
 
 	public static class StockManagerSerializableDataEntry extends SerializableData {

@@ -3,12 +3,19 @@ package thederpgamer.inventorynetwork.element.block.systems;
 import api.config.BlockConfig;
 import api.listener.events.block.SegmentPieceActivateByPlayer;
 import api.listener.events.block.SegmentPieceActivateEvent;
+import api.listener.events.block.SegmentPieceAddByMetadataEvent;
+import api.listener.events.block.SegmentPieceAddEvent;
+import org.schema.game.common.data.SegmentPiece;
 import org.schema.game.common.data.element.ElementKeyMap;
 import org.schema.game.common.data.element.FactoryResource;
 import org.schema.schine.graphicsengine.core.GraphicsContext;
 import thederpgamer.inventorynetwork.InventoryNetwork;
+import thederpgamer.inventorynetwork.data.SerializableData;
+import thederpgamer.inventorynetwork.data.StockManagerData;
 import thederpgamer.inventorynetwork.element.block.ActivationInterface;
 import thederpgamer.inventorynetwork.element.block.Block;
+import thederpgamer.inventorynetwork.element.block.SerializableDataInterface;
+import thederpgamer.inventorynetwork.manager.StockDataManager;
 import thederpgamer.inventorynetwork.ui.stockmanager.StockManagerDialog;
 
 /**
@@ -16,7 +23,7 @@ import thederpgamer.inventorynetwork.ui.stockmanager.StockManagerDialog;
  *
  * @author TheDerpGamer
  */
-public class StockManager extends Block implements ActivationInterface {
+public class StockManager extends Block implements ActivationInterface, SerializableDataInterface {
 
 	public StockManager() {
 		super("Stock Manager", ElementKeyMap.getInfo(120).getType());
@@ -64,5 +71,26 @@ public class StockManager extends Block implements ActivationInterface {
 	@Override
 	public void onLogicActivation(SegmentPieceActivateEvent event) {
 
+	}
+
+	@Override
+	public SerializableData getDataFromSegmentPiece(SegmentPiece segmentPiece) {
+		return StockDataManager.getInstance().getFromSegmentPiece(segmentPiece);
+	}
+
+	@Override
+	public SerializableData getDataFromUUID(String uuid) {
+		return StockDataManager.getInstance().getFromUUID(uuid);
+	}
+
+
+	@Override
+	public void onPlaceByPlayer(SegmentPieceAddEvent event) {
+		StockDataManager.getInstance().addToServerCache(new StockManagerData(event.getAbsIndex(), event.getSegmentController().dbId));
+	}
+
+	@Override
+	public void onLoad(SegmentPieceAddByMetadataEvent event) {
+//		StockDataManager.getInstance().addToServerCache(new StockManagerData(event.getAbsIndex(), event.getSegment().getSegmentController().dbId));
 	}
 }
