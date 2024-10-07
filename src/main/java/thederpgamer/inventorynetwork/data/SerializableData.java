@@ -3,6 +3,10 @@ package thederpgamer.inventorynetwork.data;
 import api.network.PacketReadBuffer;
 import api.network.PacketWriteBuffer;
 import org.json.JSONObject;
+import thederpgamer.inventorynetwork.data.fleetmanager.FleetManagerData;
+import thederpgamer.inventorynetwork.data.inventorynetwork.InventoryNetworkData;
+import thederpgamer.inventorynetwork.data.stockmanager.StockManagerData;
+import thederpgamer.inventorynetwork.data.supplier.SupplierData;
 
 import java.io.IOException;
 
@@ -14,8 +18,11 @@ import java.io.IOException;
 public abstract class SerializableData {
 
 	public enum DataType {
+		INVENTORY_NETWORK_DATA(InventoryNetworkData.class),
+		SUPPLIER_DATA(SupplierData.class),
 		STOCK_MANAGER_DATA(StockManagerData.class),
-		STOCK_MANAGER_DATA_ENTRY(StockManagerData.StockManagerSerializableDataEntry.class);
+		STOCK_MANAGER_DATA_ENTRY(StockManagerData.StockManagerSerializableDataEntry.class),
+		FLEET_MANAGER_DATA(FleetManagerData.class);
 
 		private final Class<? extends SerializableData> dataClass;
 
@@ -45,7 +52,7 @@ public abstract class SerializableData {
 	}
 
 	public boolean equals(Object obj) {
-		return obj.getClass() == this.getClass() && ((SerializableData) obj).getUUID().equals(getUUID());
+		return obj.getClass() == getClass() && ((SerializableData) obj).dataUUID.equals(dataUUID);
 	}
 
 	public String getUUID() {

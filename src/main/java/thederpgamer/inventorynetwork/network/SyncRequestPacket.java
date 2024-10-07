@@ -4,7 +4,7 @@ import api.network.Packet;
 import api.network.PacketReadBuffer;
 import api.network.PacketWriteBuffer;
 import org.schema.game.common.data.player.PlayerState;
-import thederpgamer.inventorynetwork.manager.StockDataManager;
+import thederpgamer.inventorynetwork.data.stockmanager.StockManagerDataManager;
 
 import java.io.IOException;
 
@@ -34,6 +34,6 @@ public class SyncRequestPacket extends Packet {
 
 	@Override
 	public void processPacketOnServer(PlayerState playerState) {
-		StockDataManager.getInstance().sendAllDataToPlayer(playerState);
+		StockManagerDataManager.getInstance().sendAllDataToPlayer(playerState);
 	}
 }

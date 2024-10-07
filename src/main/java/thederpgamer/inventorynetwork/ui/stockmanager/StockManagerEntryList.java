@@ -7,9 +7,9 @@ import org.schema.schine.graphicsengine.core.MouseEvent;
 import org.schema.schine.graphicsengine.forms.gui.*;
 import org.schema.schine.graphicsengine.forms.gui.newgui.*;
 import org.schema.schine.input.InputState;
-import thederpgamer.inventorynetwork.data.StockManagerData;
-import thederpgamer.inventorynetwork.manager.DataManager;
-import thederpgamer.inventorynetwork.manager.StockDataManager;
+import thederpgamer.inventorynetwork.data.stockmanager.StockManagerData;
+import thederpgamer.inventorynetwork.data.DataManager;
+import thederpgamer.inventorynetwork.data.stockmanager.StockManagerDataManager;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -226,7 +226,7 @@ public class StockManagerEntryList extends ScrollableTableList<StockManagerData.
 			@Override
 			public void callback(GUIElement guiElement, MouseEvent mouseEvent) {
 				if(mouseEvent.releasedLeftMouse()) {
-					StockDataManager.getInstance().sendPacket(data, DataManager.REMOVE_DATA, true);
+					StockManagerDataManager.getInstance().sendPacket(data, DataManager.REMOVE_DATA, true);
 				}
 			}
 

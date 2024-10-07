@@ -15,8 +15,8 @@ import org.schema.schine.graphicsengine.forms.gui.newgui.GUIHorizontalArea;
 import org.schema.schine.graphicsengine.forms.gui.newgui.GUIHorizontalButtonTablePane;
 import org.schema.schine.graphicsengine.forms.gui.newgui.GUIMainWindow;
 import org.schema.schine.input.InputState;
-import thederpgamer.inventorynetwork.data.StockManagerData;
-import thederpgamer.inventorynetwork.manager.StockDataManager;
+import thederpgamer.inventorynetwork.data.stockmanager.StockManagerData;
+import thederpgamer.inventorynetwork.data.stockmanager.StockManagerDataManager;
 
 /**
  * [Description]
@@ -71,7 +71,7 @@ public class StockManagerDialog extends PlayerInput {
 		public void recreateTabs() {
 			int lastTab = getSelectedTab();
 			if(!getTabs().isEmpty()) clearTabs();
-			StockManagerData data = StockDataManager.getInstance().getFromSegmentPiece(segmentPiece);
+			StockManagerData data = StockManagerDataManager.getInstance().getFromSegmentPiece(segmentPiece);
 			if(data != null) {
 				GUIContentPane entriesPane = addTab(Lng.str("STOCK ENTRIES"));
 				entriesPane.setTextBoxHeightLast(300);

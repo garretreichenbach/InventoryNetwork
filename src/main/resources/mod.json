@@ -1,7 +1,7 @@
 {
   "name": "InventoryNetwork",
   "author": "TheDerpGamer",
-  "description": "Template for making StarMade mods.",
+  "description": "Adds an inventory management system to automate your empire.",
   "version": "1.0.0",
   "starmade_version": "0.203.164",
   "client_mod": false,

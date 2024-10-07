@@ -1,5 +1,7 @@
 package thederpgamer.inventorynetwork.utils;
 
+import api.common.GameCommon;
+import api.common.GameServer;
 import org.schema.game.common.controller.Planet;
 import org.schema.game.common.controller.SegmentController;
 import org.schema.game.common.controller.Ship;
@@ -25,5 +27,9 @@ public class EntityUtils {
 			default:
 				return null;
 		}
+	}
+
+	public static SegmentController getByID(int id) {
+		return (SegmentController) GameCommon.getGameObject(id);
 	}
 }

@@ -12,5 +12,5 @@ public interface SerializableDataInterface extends PlaceListenerInterface {
 
 	SerializableData getDataFromSegmentPiece(SegmentPiece segmentPiece);
 
-	SerializableData getDataFromUUID(String uuid);
+	SerializableData getDataFromUUID(String uuid, boolean server);
 }

@@ -11,11 +11,11 @@ import org.schema.game.common.data.element.FactoryResource;
 import org.schema.schine.graphicsengine.core.GraphicsContext;
 import thederpgamer.inventorynetwork.InventoryNetwork;
 import thederpgamer.inventorynetwork.data.SerializableData;
-import thederpgamer.inventorynetwork.data.StockManagerData;
+import thederpgamer.inventorynetwork.data.stockmanager.StockManagerData;
 import thederpgamer.inventorynetwork.element.block.ActivationInterface;
 import thederpgamer.inventorynetwork.element.block.Block;
 import thederpgamer.inventorynetwork.element.block.SerializableDataInterface;
-import thederpgamer.inventorynetwork.manager.StockDataManager;
+import thederpgamer.inventorynetwork.data.stockmanager.StockManagerDataManager;
 import thederpgamer.inventorynetwork.ui.stockmanager.StockManagerDialog;
 
 /**
@@ -75,18 +75,17 @@ public class StockManager extends Block implements ActivationInterface, Serializ
 
 	@Override
 	public SerializableData getDataFromSegmentPiece(SegmentPiece segmentPiece) {
-		return StockDataManager.getInstance().getFromSegmentPiece(segmentPiece);
+		return StockManagerDataManager.getInstance().getFromSegmentPiece(segmentPiece);
 	}
 
 	@Override
-	public SerializableData getDataFromUUID(String uuid) {
-		return StockDataManager.getInstance().getFromUUID(uuid);
+	public SerializableData getDataFromUUID(String uuid, boolean server) {
+		return StockManagerDataManager.getInstance().getFromUUID(uuid, server);
 	}
-
 
 	@Override
 	public void onPlaceByPlayer(SegmentPieceAddEvent event) {
-		StockDataManager.getInstance().addToServerCache(new StockManagerData(event.getAbsIndex(), event.getSegmentController().dbId));
+		StockManagerDataManager.getInstance().addToServerCache(new StockManagerData(event.getAbsIndex(), event.getSegmentController().getId()));
 	}
 
 	@Override

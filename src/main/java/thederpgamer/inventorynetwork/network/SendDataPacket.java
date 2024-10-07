@@ -6,7 +6,7 @@ import api.network.PacketWriteBuffer;
 import org.schema.game.common.data.player.PlayerState;
 import thederpgamer.inventorynetwork.InventoryNetwork;
 import thederpgamer.inventorynetwork.data.SerializableData;
-import thederpgamer.inventorynetwork.manager.StockDataManager;
+import thederpgamer.inventorynetwork.data.stockmanager.StockManagerDataManager;
 
 import java.io.IOException;
 
@@ -49,7 +49,7 @@ public class SendDataPacket extends Packet {
 	public void processPacketOnClient() {
 		switch(dataType) {
 			case STOCK_MANAGER_DATA:
-				StockDataManager.getInstance().handlePacket(data, type, false);
+				StockManagerDataManager.getInstance().handlePacket(data, type, false);
 				break;
 			default:
 				break;
@@ -60,7 +60,7 @@ public class SendDataPacket extends Packet {
 	public void processPacketOnServer(PlayerState playerState) {
 		switch(dataType) {
 			case STOCK_MANAGER_DATA:
-				StockDataManager.getInstance().handlePacket(data, type, true);
+				StockManagerDataManager.getInstance().handlePacket(data, type, true);
 				break;
 			default:
 				break;

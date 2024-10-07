@@ -7,6 +7,7 @@ import api.listener.events.block.SegmentPieceAddEvent;
 import org.schema.game.common.data.SegmentPiece;
 import org.schema.game.common.data.element.ElementKeyMap;
 import thederpgamer.inventorynetwork.data.SerializableData;
+import thederpgamer.inventorynetwork.data.inventorynetwork.InventoryNetworkDataManager;
 import thederpgamer.inventorynetwork.element.block.ActivationInterface;
 import thederpgamer.inventorynetwork.element.block.Block;
 import thederpgamer.inventorynetwork.element.block.SerializableDataInterface;
@@ -43,8 +44,8 @@ public class InventoryNetworkNode extends Block implements ActivationInterface, 
 	}
 
 	@Override
-	public SerializableData getDataFromUUID(String uuid) {
-		return null;
+	public SerializableData getDataFromUUID(String uuid, boolean server) {
+		return InventoryNetworkDataManager.getInstance().getFromUUID(uuid, server);
 	}
 
 	@Override
