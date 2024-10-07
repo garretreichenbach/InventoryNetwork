@@ -28,6 +28,12 @@ public class FleetManagerDataManager extends DataManager<FleetManagerData> {
 	public static void initialize(boolean client) {
 		instance = new FleetManagerDataManager();
 		if(client) instance.requestFromServer();
+		else {
+			//There is a fleet order persistence issue that causes fleets to sometimes lose their orders on server restart.
+			//As a workaround, we need to go through each fleet that is supposed to be assigned to a job, and make sure it's order is set correctly.
+			//This only seems to happen on server restart, so we only need to do this on server startup.
+			for(FleetManagerData data : instance.getServerCache()) data.recheckFleetCommands();
+		}
 	}
 
 

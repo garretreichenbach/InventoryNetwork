@@ -21,8 +21,9 @@ public abstract class SerializableData {
 		INVENTORY_NETWORK_DATA(InventoryNetworkData.class),
 		SUPPLIER_DATA(SupplierData.class),
 		STOCK_MANAGER_DATA(StockManagerData.class),
-		STOCK_MANAGER_DATA_ENTRY(StockManagerData.StockManagerSerializableDataEntry.class),
-		FLEET_MANAGER_DATA(FleetManagerData.class);
+		STOCK_MANAGER_DATA_ENTRY(StockManagerData.StockManagerDataEntry.class),
+		FLEET_MANAGER_DATA(FleetManagerData.class),
+		FLEET_MANAGER_DATA_ENTRY(FleetManagerData.FleetManagerDataEntry.class);
 
 		private final Class<? extends SerializableData> dataClass;
 

@@ -22,7 +22,7 @@ public class StockManagerData extends SerializableData {
 	private final byte VERSION = 0;
 	private long blockIndex;
 	private int entityID;
-	private final Set<StockManagerSerializableDataEntry> data = new HashSet<>();
+	private final Set<StockManagerDataEntry> data = new HashSet<>();
 
 	public StockManagerData(long blockIndex, int entityID) {
 		super(DataType.STOCK_MANAGER_DATA, java.util.UUID.randomUUID().toString());
@@ -37,7 +37,7 @@ public class StockManagerData extends SerializableData {
 		json.put("dataUUID", dataUUID);
 		json.put("blockIndex", blockIndex);
 		json.put("entityID", entityID);
-		json.put("data", data.toArray(new StockManagerSerializableDataEntry[0]));
+		json.put("data", data.toArray(new StockManagerDataEntry[0]));
 		return json;
 	}
 
@@ -48,7 +48,7 @@ public class StockManagerData extends SerializableData {
 		blockIndex = json.getLong("blockIndex");
 		entityID = json.getInt("entityID");
 		JSONArray dataArray = json.getJSONArray("data");
-		for(int i = 0; i < dataArray.length(); i++) data.add(new StockManagerSerializableDataEntry(dataArray.getJSONObject(i)));
+		for(int i = 0; i < dataArray.length(); i++) data.add(new StockManagerDataEntry(dataArray.getJSONObject(i)));
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class StockManagerData extends SerializableData {
 		writeBuffer.writeLong(blockIndex);
 		writeBuffer.writeInt(entityID);
 		writeBuffer.writeInt(data.size());
-		for(StockManagerSerializableDataEntry entry : data) entry.serializeNetwork(writeBuffer);
+		for(StockManagerDataEntry entry : data) entry.serializeNetwork(writeBuffer);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class StockManagerData extends SerializableData {
 		blockIndex = readBuffer.readLong();
 		entityID = readBuffer.readInt();
 		int dataSize = readBuffer.readInt();
-		for(int i = 0; i < dataSize; i++) data.add(new StockManagerSerializableDataEntry(readBuffer));
+		for(int i = 0; i < dataSize; i++) data.add(new StockManagerDataEntry(readBuffer));
 	}
 
 	@Override
@@ -86,21 +86,21 @@ public class StockManagerData extends SerializableData {
 		return entityID;
 	}
 
-	public Set<StockManagerSerializableDataEntry> getData() {
+	public Set<StockManagerDataEntry> getData() {
 		return Collections.unmodifiableSet(data);
 	}
 
-	public void addData(StockManagerSerializableDataEntry entry) {
+	public void addData(StockManagerDataEntry entry) {
 		data.add(entry);
 		StockManagerDataManager.getInstance().sendPacket(this, DataManager.UPDATE_DATA, true);
 	}
 
-	public void removeData(StockManagerSerializableDataEntry entry) {
+	public void removeData(StockManagerDataEntry entry) {
 		data.remove(entry);
 		StockManagerDataManager.getInstance().sendPacket(this, DataManager.UPDATE_DATA, true);
 	}
 
-	public static class StockManagerSerializableDataEntry extends SerializableData {
+	public static class StockManagerDataEntry extends SerializableData {
 
 		private final byte VERSION = 0;
 		private short priority;
@@ -109,7 +109,7 @@ public class StockManagerData extends SerializableData {
 		private short type;
 		private boolean toggle;
 
-		public StockManagerSerializableDataEntry(int minStock, int maxStock, short type) {
+		public StockManagerDataEntry(int minStock, int maxStock, short type) {
 			super(DataType.STOCK_MANAGER_DATA_ENTRY, java.util.UUID.randomUUID().toString());
 			this.minStock = minStock;
 			this.maxStock = maxStock;
@@ -118,12 +118,12 @@ public class StockManagerData extends SerializableData {
 			priority = 0;
 		}
 
-		public StockManagerSerializableDataEntry(JSONObject data) {
+		public StockManagerDataEntry(JSONObject data) {
 			super(DataType.STOCK_MANAGER_DATA_ENTRY, java.util.UUID.randomUUID().toString());
 			deserialize(data);
 		}
 
-		public StockManagerSerializableDataEntry(PacketReadBuffer readBuffer) throws IOException {
+		public StockManagerDataEntry(PacketReadBuffer readBuffer) throws IOException {
 			super(DataType.STOCK_MANAGER_DATA_ENTRY, java.util.UUID.randomUUID().toString());
 			deserializeNetwork(readBuffer);
 		}

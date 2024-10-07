@@ -21,7 +21,7 @@ import java.util.Set;
  *
  * @author TheDerpGamer
  */
-public class StockManagerEntryList extends ScrollableTableList<StockManagerData.StockManagerSerializableDataEntry> implements GUIActiveInterface {
+public class StockManagerEntryList extends ScrollableTableList<StockManagerData.StockManagerDataEntry> implements GUIActiveInterface {
 
 	private final GUIElement element;
 	private final StockManagerData data;
@@ -33,39 +33,39 @@ public class StockManagerEntryList extends ScrollableTableList<StockManagerData.
 	}
 
 	@Override
-	protected Collection<StockManagerData.StockManagerSerializableDataEntry> getElementList() {
+	protected Collection<StockManagerData.StockManagerDataEntry> getElementList() {
 		return data.getData();
 	}
 
 	@Override
 	public void initColumns() {
-		addColumn("Priority", 3.0f, new Comparator<StockManagerData.StockManagerSerializableDataEntry>() {
+		addColumn("Priority", 3.0f, new Comparator<StockManagerData.StockManagerDataEntry>() {
 			@Override
-			public int compare(StockManagerData.StockManagerSerializableDataEntry o1, StockManagerData.StockManagerSerializableDataEntry o2) {
+			public int compare(StockManagerData.StockManagerDataEntry o1, StockManagerData.StockManagerDataEntry o2) {
 				return o1.getPriority() - o2.getPriority();
 			}
 		});
-		addColumn("Type", 10.0f, new Comparator<StockManagerData.StockManagerSerializableDataEntry>() {
+		addColumn("Type", 10.0f, new Comparator<StockManagerData.StockManagerDataEntry>() {
 			@Override
-			public int compare(StockManagerData.StockManagerSerializableDataEntry o1, StockManagerData.StockManagerSerializableDataEntry o2) {
+			public int compare(StockManagerData.StockManagerDataEntry o1, StockManagerData.StockManagerDataEntry o2) {
 				return o1.getType() - o2.getType();
 			}
 		});
-		addColumn("Amount", 5.0f, new Comparator<StockManagerData.StockManagerSerializableDataEntry>() {
+		addColumn("Amount", 5.0f, new Comparator<StockManagerData.StockManagerDataEntry>() {
 			@Override
-			public int compare(StockManagerData.StockManagerSerializableDataEntry o1, StockManagerData.StockManagerSerializableDataEntry o2) {
+			public int compare(StockManagerData.StockManagerDataEntry o1, StockManagerData.StockManagerDataEntry o2) {
 				return 0;
 			}
 		});
-		addColumn("Enabled", 3.0f, new Comparator<StockManagerData.StockManagerSerializableDataEntry>() {
+		addColumn("Enabled", 3.0f, new Comparator<StockManagerData.StockManagerDataEntry>() {
 			@Override
-			public int compare(StockManagerData.StockManagerSerializableDataEntry o1, StockManagerData.StockManagerSerializableDataEntry o2) {
+			public int compare(StockManagerData.StockManagerDataEntry o1, StockManagerData.StockManagerDataEntry o2) {
 				return Boolean.compare(o1.getToggle(), o2.getToggle());
 			}
 		});
-		addTextFilter(new GUIListFilterText<StockManagerData.StockManagerSerializableDataEntry>() {
+		addTextFilter(new GUIListFilterText<StockManagerData.StockManagerDataEntry>() {
 			@Override
-			public boolean isOk(String s, StockManagerData.StockManagerSerializableDataEntry entry) {
+			public boolean isOk(String s, StockManagerData.StockManagerDataEntry entry) {
 				return ElementKeyMap.getInfo(entry.getType()).getName().trim().toLowerCase(Locale.ROOT).contains(s.toLowerCase(Locale.ROOT).trim());
 			}
 		}, Lng.str("Search"), ControllerElement.FilterRowStyle.FULL);
@@ -73,10 +73,10 @@ public class StockManagerEntryList extends ScrollableTableList<StockManagerData.
 	}
 
 	@Override
-	public void updateListEntries(GUIElementList guiElementList, Set<StockManagerData.StockManagerSerializableDataEntry> set) {
+	public void updateListEntries(GUIElementList guiElementList, Set<StockManagerData.StockManagerDataEntry> set) {
 		guiElementList.deleteObservers();
 		guiElementList.addObserver(this);
-		for(StockManagerData.StockManagerSerializableDataEntry data : set) {
+		for(StockManagerData.StockManagerDataEntry data : set) {
 			if(data == null) continue;
 			GUIClippedRow priorityRow = getSimpleRow(data.getPriority(), this);
 			GUIClippedRow typeRow = getSimpleRow(ElementKeyMap.getInfo(data.getType()).getName(), this);
@@ -101,7 +101,7 @@ public class StockManagerEntryList extends ScrollableTableList<StockManagerData.
 		guiElementList.updateDim();
 	}
 
-	private GUIHorizontalButtonTablePane redrawButtonPane(final StockManagerData.StockManagerSerializableDataEntry data, GUIAncor anchor) {
+	private GUIHorizontalButtonTablePane redrawButtonPane(final StockManagerData.StockManagerDataEntry data, GUIAncor anchor) {
 		GUIHorizontalButtonTablePane buttonPane = new GUIHorizontalButtonTablePane(getState(), 4, 1, anchor);
 		buttonPane.onInit();
 		buttonPane.addButton(0, 0, Lng.str("SET PRIORITY"), GUIHorizontalArea.HButtonColor.BLUE, new GUICallback() {
@@ -248,9 +248,9 @@ public class StockManagerEntryList extends ScrollableTableList<StockManagerData.
 		return buttonPane;
 	}
 
-	public class StockManagerEntryListRow extends ScrollableTableList<StockManagerData.StockManagerSerializableDataEntry>.Row {
+	public class StockManagerEntryListRow extends ScrollableTableList<StockManagerData.StockManagerDataEntry>.Row {
 
-		public StockManagerEntryListRow(InputState inputState, StockManagerData.StockManagerSerializableDataEntry entry, GUIElement... guiElements) {
+		public StockManagerEntryListRow(InputState inputState, StockManagerData.StockManagerDataEntry entry, GUIElement... guiElements) {
 			super(inputState, entry, guiElements);
 			highlightSelect = true;
 			highlightSelectSimple = true;
