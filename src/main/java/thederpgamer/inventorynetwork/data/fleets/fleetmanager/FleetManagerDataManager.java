@@ -1,4 +1,4 @@
-package thederpgamer.inventorynetwork.data.fleetmanager;
+package thederpgamer.inventorynetwork.data.fleets.fleetmanager;
 
 import api.mod.config.PersistentObjectUtil;
 import org.schema.game.common.data.SegmentPiece;
@@ -35,7 +35,6 @@ public class FleetManagerDataManager extends DataManager<FleetManagerData> {
 			for(FleetManagerData data : instance.getServerCache()) data.recheckFleetCommands();
 		}
 	}
-
 
 	@Override
 	public FleetManagerData getFromSegmentPiece(SegmentPiece segmentPiece) {

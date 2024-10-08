@@ -1,12 +1,14 @@
-package thederpgamer.inventorynetwork.data.fleetmanager;
+package thederpgamer.inventorynetwork.data.fleets.fleetmanager;
 
 import api.network.PacketReadBuffer;
 import api.network.PacketWriteBuffer;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.schema.game.common.data.fleet.Fleet;
 import org.schema.game.network.objects.remote.FleetCommand;
 import thederpgamer.inventorynetwork.InventoryNetwork;
 import thederpgamer.inventorynetwork.data.SerializableData;
+import thederpgamer.inventorynetwork.data.fleets.fleetdeliveryjob.FleetDeliveryJobData;
 import thederpgamer.inventorynetwork.utils.EntityUtils;
 
 import java.io.IOException;
@@ -27,6 +29,7 @@ public class FleetManagerData extends SerializableData {
 	private long blockIndex;
 	private int entityID;
 	private Set<FleetManagerDataEntry> managedFleets = new HashSet<>();
+	private Set<FleetDeliveryJobData> deliveryJobs = new HashSet<>();
 
 	public FleetManagerData(long blockIndex, int entityID) {
 		super(DataType.FLEET_MANAGER_DATA, UUID.randomUUID().toString());
@@ -49,7 +52,12 @@ public class FleetManagerData extends SerializableData {
 		json.put("dataUUID", dataUUID);
 		json.put("blockIndex", blockIndex);
 		json.put("entityID", entityID);
-
+		JSONArray fleetArray = new JSONArray();
+		for(FleetManagerDataEntry entry : managedFleets) fleetArray.put(entry.serialize());
+		json.put("managedFleets", fleetArray);
+		JSONArray deliveryArray = new JSONArray();
+		for(FleetDeliveryJobData entry : deliveryJobs) deliveryArray.put(entry.serialize());
+		json.put("deliveryJobs", deliveryArray);
 		return json;
 	}
 
@@ -60,6 +68,11 @@ public class FleetManagerData extends SerializableData {
 		blockIndex = data.getLong("blockIndex");
 		entityID = data.getInt("entityID");
 		managedFleets.clear();
+		JSONArray fleetArray = data.getJSONArray("managedFleets");
+		for(int i = 0; i < fleetArray.length(); i ++) managedFleets.add(new FleetManagerDataEntry(fleetArray.getJSONObject(i)));
+		deliveryJobs.clear();
+		JSONArray deliveryArray = data.getJSONArray("deliveryJobs");
+		for(int i = 0; i < deliveryArray.length(); i ++) deliveryJobs.add(new FleetDeliveryJobData(deliveryArray.getJSONObject(i)));
 	}
 
 	@Override
@@ -68,6 +81,10 @@ public class FleetManagerData extends SerializableData {
 		writeBuffer.writeString(dataUUID);
 		writeBuffer.writeLong(blockIndex);
 		writeBuffer.writeInt(entityID);
+		writeBuffer.writeShort((short) managedFleets.size());
+		for(FleetManagerDataEntry entry : managedFleets) entry.serializeNetwork(writeBuffer);
+		writeBuffer.writeShort((short) deliveryJobs.size());
+		for(FleetDeliveryJobData entry : deliveryJobs) entry.serializeNetwork(writeBuffer);
 	}
 
 	@Override
@@ -76,6 +93,12 @@ public class FleetManagerData extends SerializableData {
 		dataUUID = readBuffer.readString();
 		blockIndex = readBuffer.readLong();
 		entityID = readBuffer.readInt();
+		managedFleets.clear();
+		int fleetCount = readBuffer.readShort();
+		for(int i = 0; i < fleetCount; i ++) managedFleets.add(new FleetManagerDataEntry(readBuffer));
+		deliveryJobs.clear();
+		int deliveryCount = readBuffer.readShort();
+		for(int i = 0; i < deliveryCount; i ++) deliveryJobs.add(new FleetDeliveryJobData(readBuffer));
 	}
 
 	public long getBlockIndex() {
@@ -106,6 +129,26 @@ public class FleetManagerData extends SerializableData {
 		FleetManagerDataManager.getInstance().updateData(this, server);
 	}
 
+	public Set<FleetDeliveryJobData> getDeliveryJobs() {
+		return Collections.unmodifiableSet(deliveryJobs);
+	}
+
+	public void addDeliveryJob(FleetDeliveryJobData deliveryJob, boolean server) {
+		deliveryJobs.add(deliveryJob);
+		FleetManagerDataManager.getInstance().updateData(this, server);
+	}
+
+	public void removeDeliveryJob(FleetDeliveryJobData deliveryJob, boolean server) {
+		deliveryJobs.remove(deliveryJob);
+		FleetManagerDataManager.getInstance().updateData(this, server);
+	}
+
+	public void updateDeliveryJob(FleetDeliveryJobData deliveryJob, boolean server) {
+		deliveryJobs.remove(deliveryJob);
+		deliveryJobs.add(deliveryJob);
+		FleetManagerDataManager.getInstance().updateData(this, server);
+	}
+
 	public byte[] getCommand(long fleetID) {
 		for(FleetManagerDataEntry entry : managedFleets) {
 			if(entry.getFleetID() == fleetID) return entry.getCommand();
@@ -133,17 +176,17 @@ public class FleetManagerData extends SerializableData {
 		private long fleetID;
 		private byte[] command;
 
-		protected FleetManagerDataEntry(long fleetID, byte[] command) {
+		public FleetManagerDataEntry(long fleetID, byte[] command) {
 			super(DataType.FLEET_MANAGER_DATA_ENTRY, UUID.randomUUID().toString());
 			this.fleetID = fleetID;
 			this.command = command;
 		}
 
-		protected FleetManagerDataEntry(PacketReadBuffer readBuffer) throws IOException {
+		public FleetManagerDataEntry(PacketReadBuffer readBuffer) throws IOException {
 			super(readBuffer);
 		}
 
-		protected FleetManagerDataEntry(JSONObject data) {
+		public FleetManagerDataEntry(JSONObject data) {
 			super(data);
 		}
 
