@@ -6,7 +6,7 @@ import api.network.packets.PacketUtil;
 import org.schema.game.common.data.SegmentPiece;
 import org.schema.game.common.data.player.PlayerState;
 import thederpgamer.inventorynetwork.InventoryNetwork;
-import thederpgamer.inventorynetwork.data.fleets.fleetdeliveryjob.FleetDeliveryJobDataManager;
+import thederpgamer.inventorynetwork.data.job.JobDataManager;
 import thederpgamer.inventorynetwork.data.fleets.fleetmanager.FleetManagerDataManager;
 import thederpgamer.inventorynetwork.data.inventorynetwork.InventoryNetworkDataManager;
 import thederpgamer.inventorynetwork.data.stockmanager.StockManagerDataManager;
@@ -32,7 +32,7 @@ public abstract class DataManager<E extends SerializableData> {
 		StockManagerDataManager.initialize(client);
 		SupplierDataManager.initialize(client);
 		FleetManagerDataManager.initialize(client);
-		FleetDeliveryJobDataManager.initialize(client);
+		JobDataManager.initialize(client);
 	}
 
 	public void sendDataToAllPlayers(SerializableData data, int type) {

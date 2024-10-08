@@ -6,6 +6,9 @@ import org.json.JSONObject;
 import thederpgamer.inventorynetwork.data.SerializableData;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Queue;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -19,7 +22,8 @@ public class InventoryNetworkData extends SerializableData {
 	private final byte VERSION = 0;
 	private long blockIndex;
 	private int entityID;
-
+	private Queue<String> jobQueue
+			
 	protected InventoryNetworkData(long blockIndex, int entityID) {
 		super(DataType.INVENTORY_NETWORK_DATA, UUID.randomUUID().toString());
 		this.blockIndex = blockIndex;

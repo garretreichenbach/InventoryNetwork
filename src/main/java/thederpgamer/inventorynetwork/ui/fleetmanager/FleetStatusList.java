@@ -15,11 +15,11 @@ import java.util.Set;
  *
  * @author TheDerpGamer
  */
-public class AvailableFleetsList extends ScrollableTableList<Fleet> {
+public class FleetStatusList extends ScrollableTableList<Fleet> {
 
 	private final GUIElement anchor;
 
-	public AvailableFleetsList(InputState state, GUIElement anchor) {
+	public FleetStatusList(InputState state, GUIElement anchor) {
 		super(state, 300, 300, anchor);
 		this.anchor = anchor;
 	}

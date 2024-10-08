@@ -1,4 +1,4 @@
-package thederpgamer.inventorynetwork.data.fleets.fleetdeliveryjob;
+package thederpgamer.inventorynetwork.data.job;
 
 import api.network.PacketReadBuffer;
 import api.network.PacketWriteBuffer;
@@ -19,16 +19,15 @@ import java.util.UUID;
  *
  * @author TheDerpGamer
  */
-public class FleetDeliveryJobData extends SerializableData {
+public class JobData extends SerializableData {
 
 	private final byte VERSION = 0;
 	private long fleetId;
-	private String fleetName;
 	private String targetDataUUID;
 	private float totalVolume;
 	private final HashMap<Short, Integer> cargo = new HashMap<>();
 
-	public FleetDeliveryJobData(long fleetId, String fleetName, String targetDataUUID, float totalVolume, HashMap<Short, Integer> cargo) {
+	public JobData(long fleetId, String fleetName, String targetDataUUID, float totalVolume, HashMap<Short, Integer> cargo) {
 		super(DataType.FLEET_DELIVERY_JOB_DATA, UUID.randomUUID().toString());
 		this.fleetId = fleetId;
 		this.fleetName = fleetName;
@@ -37,11 +36,11 @@ public class FleetDeliveryJobData extends SerializableData {
 		this.cargo.putAll(cargo);
 	}
 
-	public FleetDeliveryJobData(PacketReadBuffer readBuffer) throws IOException {
+	public JobData(PacketReadBuffer readBuffer) throws IOException {
 		super(readBuffer);
 	}
 
-	public FleetDeliveryJobData(JSONObject data) {
+	public JobData(JSONObject data) {
 		super(data);
 	}
 

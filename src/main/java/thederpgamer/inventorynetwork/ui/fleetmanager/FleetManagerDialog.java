@@ -12,6 +12,7 @@ import org.schema.schine.graphicsengine.forms.gui.newgui.GUIHorizontalButtonTabl
 import org.schema.schine.graphicsengine.forms.gui.newgui.GUIMainWindow;
 import thederpgamer.inventorynetwork.data.fleets.fleetmanager.FleetManagerData;
 import thederpgamer.inventorynetwork.data.fleets.fleetmanager.FleetManagerDataManager;
+import thederpgamer.inventorynetwork.data.inventorynetwork.InventoryNetworkData;
 
 /**
  * [Description]
@@ -67,22 +68,23 @@ public class FleetManagerDialog extends PlayerInput {
 			int lastTab = getSelectedTab();
 			if(!getTabs().isEmpty()) clearTabs();
 			FleetManagerData data = FleetManagerDataManager.getInstance().getFromSegmentPiece(segmentPiece);
-			if(data != null) {
+			InventoryNetworkData networkData = data.getNetwork();
+			if(data != null && networkData != null) {
 				GUIContentPane fleetsPane = addTab(Lng.str("MANAGED FLEETS"));
 				fleetsPane.setTextBoxHeightLast(300);
 				fleetsPane.addDivider(450);
 				fleetsPane.addNewTextBox(0, 32);
 				fleetsPane.addNewTextBox(1, 32);
 
-				FleetDeliveryJobsList deliveryJobsList = new FleetDeliveryJobsList(getState(), fleetsPane.getContent(0, 0), data);
+				JobList deliveryJobsList = new JobList(getState(), fleetsPane.getContent(0, 0), networkData);
 				deliveryJobsList.onInit();
 				fleetsPane.getContent(0, 0).attach(deliveryJobsList);
 				GUIHorizontalButtonTablePane deliveryJobButtonPane = new GUIHorizontalButtonTablePane(getState(), 1, 1, fleetsPane.getContent(0, 1));
 				deliveryJobButtonPane.onInit();
 
-				AvailableFleetsList availableFleetsList = new AvailableFleetsList(getState(), fleetsPane.getContent(1, 0));
-				availableFleetsList.onInit();
-				fleetsPane.getContent(1, 0).attach(availableFleetsList);
+				FleetStatusList fleetStatusList = new FleetStatusList(getState(), fleetsPane.getContent(1, 0));
+				fleetStatusList.onInit();
+				fleetsPane.getContent(1, 0).attach(fleetStatusList);
 				GUIHorizontalButtonTablePane availableFleetsButtonPane = new GUIHorizontalButtonTablePane(getState(), 1, 1, fleetsPane.getContent(1, 1));
 				availableFleetsButtonPane.onInit();
 			}

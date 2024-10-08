@@ -3,7 +3,7 @@ package thederpgamer.inventorynetwork.data;
 import api.network.PacketReadBuffer;
 import api.network.PacketWriteBuffer;
 import org.json.JSONObject;
-import thederpgamer.inventorynetwork.data.fleets.fleetdeliveryjob.FleetDeliveryJobData;
+import thederpgamer.inventorynetwork.data.job.JobData;
 import thederpgamer.inventorynetwork.data.fleets.fleetdeliverytarget.FleetDeliveryTargetData;
 import thederpgamer.inventorynetwork.data.fleets.fleetmanager.FleetManagerData;
 import thederpgamer.inventorynetwork.data.inventorynetwork.InventoryNetworkData;
@@ -26,7 +26,7 @@ public abstract class SerializableData {
 		STOCK_MANAGER_DATA_ENTRY(StockManagerData.StockManagerDataEntry.class),
 		FLEET_MANAGER_DATA(FleetManagerData.class),
 		FLEET_MANAGER_DATA_ENTRY(FleetManagerData.FleetManagerDataEntry.class),
-		FLEET_DELIVERY_JOB_DATA(FleetDeliveryJobData.class),
+		FLEET_DELIVERY_JOB_DATA(JobData.class),
 		FLEET_DELIVERY_TARGET_DATA(FleetDeliveryTargetData.class);
 
 		private final Class<? extends SerializableData> dataClass;
